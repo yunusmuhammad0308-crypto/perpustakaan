@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Peminjaman Buku</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome untuk Ikon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Konfigurasi Tema Kustom Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        space: {
+                            900: '#0B1021',
+                            800: '#111827',
+                            700: '#1E3A8A',
+                            accent: '#3B82F6'
+                        }
+                    },
+                    animation: {
+                        'gradient-x': 'gradient-x 15s ease infinite',
+                    },
+                    keyframes: {
+                        'gradient-x': {
+                            '0%, 100%': {
+                                'background-size': '200% 200%',
+                                'background-position': 'left center'
+                            },
+                            '50%': {
+                                'background-size': '200% 200%',
+                                'background-position': 'right center'
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Class utilitas untuk efek Glassmorphism */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-space-900 bg-gradient-to-br from-space-900 via-space-800 to-space-700 animate-gradient-x text-gray-200 font-sans selection:bg-space-accent selection:text-white relative">
+
+    <!-- Elemen dekoratif glowing (Floating orbs) -->
+    <div class="fixed top-20 left-10 w-72 h-72 bg-blue-600 rounded-full mix-blend-multiply filter blur-[100px] opacity-20"></div>
+    <div class="fixed bottom-20 right-10 w-72 h-72 bg-purple-600 rounded-full mix-blend-multiply filter blur-[100px] opacity-20"></div>
+
+    <!-- Navigasi -->
+    <nav class="glass-panel sticky top-0 z-50 shadow-lg mb-8">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <a href="{{ url_for('index') }}" class="text-2xl font-bold text-white tracking-wider flex items-center gap-2">
+                    <i class="fa-solid fa-book-journal-whills text-space-accent"></i>
+                    Astro<span class="text-space-accent font-light">Library</span>
+                </a>
+                <div class="flex gap-4">
+                    <a href="{{ url_for('index') }}" class="hover:text-space-accent transition-colors duration-300"><i class="fa-solid fa-house"></i> Beranda</a>
+                    <a href="{{ url_for('admin') }}" class="hover:text-space-accent transition-colors duration-300"><i class="fa-solid fa-user-shield"></i> Pustakawan</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Konten Utama Dinamis -->
+    <main class="max-w-6xl mx-auto px-4 pb-12 relative z-10">
+        {% block content %}{% endblock %}
+    </main>
+
+</body>
+</html>

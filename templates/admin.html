@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="flex items-center gap-3 mb-8">
+    <i class="fa-solid fa-shield-halved text-3xl text-space-accent"></i>
+    <h1 class="text-3xl font-bold text-white">Dasbor Pustakawan</h1>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+    <!-- Kolom Kiri: Form Tambah Buku -->
+    <div class="lg:col-span-1">
+        <div class="glass-panel rounded-2xl p-6">
+            <h2 class="text-xl font-bold text-white mb-6 border-b border-white/10 pb-2">Tambah Buku Baru</h2>
+            <form action="{{ url_for('add_book') }}" method="POST" class="flex flex-col gap-4">
+                <div>
+                    <label class="block text-sm text-gray-400 mb-1">Judul Buku</label>
+                    <input type="text" name="title" required
+                        class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-space-accent transition-all">
+                </div>
+                <div>
+                    <label class="block text-sm text-gray-400 mb-1">Nama Penulis</label>
+                    <input type="text" name="author" required
+                        class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-space-accent transition-all">
+                </div>
+                <button type="submit" class="mt-2 w-full bg-white text-space-900 font-bold py-2.5 rounded-lg hover:bg-gray-200 transition-colors">
+                    <i class="fa-solid fa-plus mr-2"></i> Simpan Buku
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Kolom Kanan: Daftar Peminjaman Aktif -->
+    <div class="lg:col-span-2">
+        <div class="glass-panel rounded-2xl p-6 mb-8">
+            <h2 class="text-xl font-bold text-white mb-6 border-b border-white/10 pb-2">Menunggu Pengembalian</h2>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="text-gray-400 text-sm border-b border-white/10">
+                            <th class="pb-3 font-medium">Buku</th>
+                            <th class="pb-3 font-medium">Peminjam</th>
+                            <th class="pb-3 font-medium">Tanggal</th>
+                            <th class="pb-3 font-medium text-right">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for b in borrowings %}
+                        <tr class="border-b border-white/5 hover:bg-white/5 transition-colors">
+                            <td class="py-4 text-white font-medium">{{ b['title'] }}</td>
+                            <td class="py-4 text-gray-300">{{ b['borrower_name'] }}</td>
+                            <td class="py-4 text-gray-400 text-sm">{{ b['borrow_date'][:10] }}</td>
+                            <td class="py-4 text-right">
+                                <form action="{{ url_for('return_book', borrow_id=b['borrow_id'], book_id=b['book_id']) }}" method="POST">
+                                    <button type="submit" class="bg-space-accent/20 text-space-accent hover:bg-space-accent hover:text-white px-4 py-1.5 rounded-lg text-sm transition-colors border border-space-accent/30">
+                                        Konfirmasi Kembali
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="4" class="py-8 text-center text-gray-500">Semua buku telah dikembalikan.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

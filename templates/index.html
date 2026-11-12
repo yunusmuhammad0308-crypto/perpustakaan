@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="text-center mb-12">
+    <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-4 tracking-tight">Jelajahi Koleksi Kami</h1>
+    <p class="text-gray-400 max-w-2xl mx-auto">Temukan dan pinjam buku favorit Anda. Peminjaman cepat dan mudah dalam satu genggaman.</p>
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    {% for book in books %}
+    <div class="glass-panel rounded-2xl p-6 transition-all duration-300 hover:shadow-[0_0_30px_rgba(59,130,246,0.3)] hover:-translate-y-2 group">
+        <div class="flex items-start justify-between mb-4">
+            <div class="w-12 h-12 rounded-full bg-space-accent/20 flex items-center justify-center text-space-accent group-hover:scale-110 transition-transform">
+                <i class="fa-solid fa-book-open text-xl"></i>
+            </div>
+            <span class="px-3 py-1 text-xs font-semibold rounded-full bg-green-500/20 text-green-400 border border-green-500/30">
+                Tersedia
+            </span>
+        </div>
+        <h3 class="text-xl font-bold text-white mb-1 line-clamp-2">{{ book['title'] }}</h3>
+        <p class="text-gray-400 text-sm mb-6 flex items-center gap-2">
+            <i class="fa-solid fa-pen-nib"></i> {{ book['author'] }}
+        </p>
+
+        <form action="{{ url_for('borrow', book_id=book['id']) }}" method="POST" class="mt-auto">
+            <div class="flex flex-col gap-3">
+                <input type="text" name="borrower_name" required placeholder="Nama Peminjam..."
+                    class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white placeholder-gray-500 focus:outline-none focus:border-space-accent focus:ring-1 focus:ring-space-accent transition-all">
+                <button type="submit" class="w-full bg-space-accent hover:bg-blue-600 text-white font-semibold py-2 rounded-lg transition-colors shadow-[0_0_15px_rgba(59,130,246,0.5)] hover:shadow-[0_0_25px_rgba(59,130,246,0.7)]">
+                    Pinjam Buku
+                </button>
+            </div>
+        </form>
+    </div>
+    {% else %}
+    <div class="col-span-full text-center py-12 glass-panel rounded-2xl">
+        <i class="fa-solid fa-box-open text-4xl text-gray-500 mb-4"></i>
+        <h3 class="text-xl text-gray-300">Mohon maaf, saat ini tidak ada buku yang tersedia.</h3>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
